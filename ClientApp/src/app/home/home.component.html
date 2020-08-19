@@ -1,0 +1,49 @@
+<h1>Donation Form</h1>
+<div class="container-fluid mb-5" *ngIf="showForm">
+  <form #userForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label> First Name</label>
+      <input type="text" class="form-control" name="firstName" [(ngModel)]="donationModel.firstName" />
+    </div>
+    <div class="form-group">
+      <label> Last Name</label>
+      <input type="text" class="form-control" name="lastName" [(ngModel)]="donationModel.lastName" />
+    </div>
+    <div class="form-group">
+      <label for="email"> Email</label>
+      <input type="email" class="form-control" [class.is-invalid]="email.invalid && email.touched" pattern='^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$' #email="ngModel" name="email" id="email" [(ngModel)]="donationModel.email" />
+      <div *ngIf="email.errors && (email.invalid || email.touched)">
+        <small class="text-danger" *ngIf="email.errors.pattern">Invalid Email</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label> Amount</label>
+      <input type="text" class="form-control" [class.is-invalid]="amount.invalid && amount.touched" pattern="^\d+$" #amount="ngModel" name="amount" [(ngModel)]="donationModel.amount" (change)="onAmountChange()" required />
+      <div *ngIf="amount.errors && (amount.invalid || amount.touched)">
+        <small class="text-danger" *ngIf="amount.errors.required">Amount is required</small>
+        <small class="text-danger" *ngIf="amount.errors.pattern">Invalid Amount</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label> Credit Card</label>
+      <input type="text" class="form-control" [class.is-invalid]="cc.invalid && cc.touched" pattern="^((4\d{3})|(5[1-5]\d{2})|(6011)|(34\d{1})|(37\d{1}))-?\s?\d{4}-?\s?\d{4}-?\s?\d{4}|3[4,7][\d\s-]{15}$" #cc="ngModel" name="cc" [(ngModel)]="donationModel.cc" required />
+      <div *ngIf="cc.errors && (cc.invalid || cc.touched)">
+        <small class="text-danger" *ngIf="cc.errors.required">Credit Card is required</small>
+        <small class="text-danger" *ngIf="cc.errors.pattern">Invalid Credit Card</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label> Fee (2.9% + 0.3 flat)</label><br />
+      {{donationModel.fee}}
+    </div>
+    <div class="form-group">
+      <label> Total</label><br />
+      {{donationModel.total}}
+    </div>
+    <input type="submit" value="submit" [disabled]="userForm.invalid" />
+  </form>
+</div>
+
+<div *ngIf="!showForm">
+  Thank you for your doantion
+</div>
