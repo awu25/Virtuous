@@ -25,8 +25,14 @@ export class HomeComponent implements OnChanges {
   }
 
   onAmountChange() {
-    this.donationModel.fee = Number((this.donationModel.amount * 0.029 + 0.3).toFixed(2));
-    this.donationModel.total = this.donationModel.amount + this.donationModel.fee;
+    if (isNaN(this.donationModel.amount)) {
+      this.donationModel.fee = 0;
+      this.donationModel.total = 0;
+    }
+    else {
+      this.donationModel.fee = Number((this.donationModel.amount * 0.029 + 0.3).toFixed(2));
+      this.donationModel.total = this.donationModel.amount + this.donationModel.fee;
+    }
   }
 
   showForm = true;
